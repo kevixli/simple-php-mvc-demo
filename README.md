@@ -1,14 +1,7 @@
-2006 Copyright by Kevin Lee
+# Simple PHP MVC Framework Demo
+This is my demo PHP Web MVC framework Project. It is similar to WebWork (Struts 2) Framework.
 
-KEVIX (0.5 beta version)
-
-Introduction :  
-KEVIX Framework is action-based /Object-oriented PHP 5 framework. It is similar to WebWork Framework. It provides MVC model structure for web developer. 
-
-License :  
-KEVIX framework is licensed under a LGPL license. 
-
-Feature : 
+# Feature : 
 - Object-oriented action class based 
 - Validation check 
 - Auto set all received data (From POST/GET) into action class of all "set" methods 
@@ -20,8 +13,7 @@ Feature :
   (i.e. Calendar / PropertiesReader / Validator / StringUtil / Application / XML parser) 
 - Support emulate Application variable like ASP application variable 
 - Add filter supporting 
-- Build-in filters 
-  Application filter, validation filter, IoC component filter, File upload filter, Log filter       (not finish) , I18N filter (not finish) 
+- Build-in filters :
+  Application filter, validation filter, IoC component filter, File upload filter
 - Easy to work with Smarty / PHPTAL / Savant 2 for template engine. 
 - Easy for debug by using PHP Unit 
- 
