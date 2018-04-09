@@ -1,0 +1,358 @@
+<html>
+<head>
+<title>Chapter 2: Start your first application</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link href="css/manual.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+<table width="100%" border="0">
+  <tr>
+    <td width="30">&nbsp;</td>
+    <td>
+		<span class="topic"><a name="top" id="top"></a>Start your first application</span><br>		
+		<br>
+      	<a name="SimpleApplication"><span class="session">Simple application</span></a>
+      	<ol class="numList">
+			<li><strong><u>Write relative action class :</u></strong><br>
+            Action class is a place which is stored logic to control and can process all things which you want. (i.e. Store data into database, Get data from database, etc…) All action class must extend to &quot;<strong>ActionBase</strong>&quot; class. You can include this class by using &quot;<strong>include_once (&quot;ActionBase.php&quot;);</strong>&quot;. &quot;execute&quot; method is abstract method from &quot;<strong>ActionBase</strong>&quot; class. This method is main method. By default, &quot;execute&quot; method is called when this action class is called. Every action class must define this method. This method must return the string value. It is mapping value of the location of template file in XML action mapping file. Assume that the root folder of action class is &quot;class/action/&quot;, we save this action class in &quot;<em>&lt;project root&gt;</em>/class/action/TestAction.php&quot;.<br>
+            <br>
+            <strong>TestAction.php:</strong><br>
+      <table width="100%" cellpadding="0" cellspacing="0" class="codeTable">
+        <tr>
+          <td valign="top" class="code">&lt;?php<br>
+              <span class="codeComment">/* &quot;ActionBase&quot; class must be included and extended by all action class */ </span><br>
+              include_once (&quot;ActionBase.php&quot;);<br>
+              <br>
+              class Test Action extends ActionBase {<br><br>
+              <span class="codeComment">/* Main method */</span><br>
+              &nbsp;&nbsp;&nbsp;public function execute() {<br>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return &quot; success &quot;;<br>
+              &nbsp;&nbsp;&nbsp;}
+              <br>
+              }<br>
+              ?&gt;			</td>
+        </tr>
+      </table>
+      <br>
+      </li>
+	  <li><strong><u>Create HTML template file(s) for view part :</u></strong><br>
+      Assume that the template root folder is &quot;<em>&lt;project root&gt;</em>/template&quot;. We save this template page into &quot;<em>&lt;project root&gt;</em>/template/result.html&quot;.<br>
+      <br>
+      <strong>result.html:</strong><br>
+      <table cellpadding="0" cellspacing="0" class="codeTable">
+        <tr>
+          	<td width="624" valign="top" class="code">&lt;html&gt;<br>
+              &lt;head&gt;<br>              &lt;title&gt;Simple application&lt;/title&gt;<br>              &lt;/head&gt;<br>
+              &lt;body&gt;successfully page&lt;/body&gt;<br>
+              &lt;/html&gt;</td>
+        </tr>
+      </table>
+	  </li>
+	  <br>
+      <li><u><strong>
+	  Modify &quot;default.actions.xml&quot; to describe the relationship between action class and template file(s) :</strong></u><br>
+      In every action class, we should define all &quot;return&quot; string value(s) and which template file(s) is/are represented to these &quot;return&quot; string value(s).
+      In action tag, &quot;actionPath&quot; attribute defines the location of action class file in root folder of action class. &quot;className&quot; attribute defines the action class name. &quot;name&quot; attribute defines the keyword which is used to call action class. &quot;view&quot; tag defines what &quot;return&quot; string value is represented to template file. &quot;name&quot; attribute of &quot;view&quot; tag defines the value of &quot;return&quot; string and the content of &quot;view&quot; tag defines related template file. If you want to know more detail about action mapping file, you can refer &quot;<strong>Tags in action mapping file</strong>&quot; part.<br>
+      <br>
+      <strong>default.action.xml:
+      </strong>      
+      <table width="100%" cellpadding="0" cellspacing="0" class="codeTable">
+        <tr>
+          	<td valign="top" class="code">
+		  		&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;<br>
+           	 	&lt;actions&gt;<br>
+           	 	&lt;action actionPath=&quot;TestAction.php&quot; name=&quot;Test&quot; className=&quot;TestAction&quot;&gt;<br>
+           	 	&lt;view name=&quot;success&quot;&gt;result.html&lt;/view&gt;<br>
+            	&lt;/action&gt;<br>
+           	  &lt;/actions&gt;			 </td>
+        </tr>
+      </table>
+      </li>
+	  <br>
+      <li><strong><u>Afterwards, we can call this action class by entering following URL in browser :</u></strong><br>
+      <table width="100%" cellpadding="0" cellspacing="0" class="codeTable">
+        <tr>
+          <td valign="top" class="code">http://<em>&lt;Hosting address&gt;</em>/<em>&lt;project root&gt;</em>/ActionHandler.php?__action__=Test</td>
+        </tr>
+      </table>
+      </li>
+	  <br>
+      <li><strong><u>It returns &quot;result.html&quot; template page in browser :</u></strong><br>
+	  <img width="448" height="276" src="images/ch2-1.jpg"></strong></p>
+      </ol>
+        <a name="HTMLFormApplication"><span class="session">HTML Form application</span></a><br>
+		In this example, we want to provide simple HTML form for user to input their name and address. After submitting form, browser will show all input values in another page.<br>		<br>	  <table cellspacing="0" cellpadding="0">
+        <tr>
+          <td width="319" valign="top"><p><img width="300" height="198" src="images/ch2-2.jpg"></p></td>
+          <td width="60" valign="middle"><p><img width="37" height="36" src="images/arrow.gif"></p></td>
+          <td width="336" valign="top"><p><img width="309" height="204" src="images/ch2-3.jpg"></p></td>
+        </tr>
+      </table>
+	  <ol class="numList">
+	  <li><strong><u>Modify action class :</u></strong><br>
+      Now, we modify the action class which is demo in previous example.<br>
+	  <ul class="list">
+      <li>In this example, we take two values (name, address) from HTML form. Add two private parameters to store values of input boxes in HTML form.      </li>
+	  <br><br>
+      <li>We add &quot;get&quot; and &quot;set&quot; methods for each parameter. The rule of naming get / set method is same as naming of Java Bean get /set method. <strong>KEVIX </strong> will find out all set method(s) of parameter(s) in action class and set related value from HTML form to related private parameter(s) by using these set method(s). After processing in action class, <strong>KEVIX </strong> will find out all get method(s) of parameter(s) in action class and pass all value(s) of parameter(s) to template engine by using these get method(s).      </li>
+	  <br><br>
+      <li>We also add one of method which is called &quot;submit&quot; (i.e. the naming of method is up to you). It is because we want to call this method after submitting HTML Form.
+  We can call this method by using following URL:<br>
+      <table cellpadding="0" cellspacing="0" class="codeTable">
+        <tr>
+          <td width="516" valign="top" class="code">http://<em>&lt;Hosting address&gt;</em>/<em>&lt;project root&gt;</em>/ActionHandler.php?__action__=Test !submit</td>
+        </tr>
+      </table>
+      <br>
+	  We can put this URL to &quot;action&quot; value of &quot;form&quot; tag in HTML form.      </li>
+      </ul><br>
+      <strong>TestAction.php :</strong><br>
+      <table width="100%" cellpadding="0" cellspacing="0" class="codeTable">
+        <tr>
+          <td valign="top" class="code">&lt;?php<br>
+              include_once (&quot;ActionBase.php&quot;);<br>              <br>
+              class Test Action extends ActionBase {<br>
+              &nbsp;&nbsp;&nbsp;private $address;<br>
+              &nbsp;&nbsp;&nbsp;private $name;<br>              <br>
+              &nbsp;&nbsp;&nbsp;public function getAddress(){<br>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return $this-&gt;address;<br>
+              &nbsp;&nbsp;&nbsp;}<br>              <br>
+              &nbsp;&nbsp;&nbsp;public function setAddress($address){<br>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$this-&gt;address = $address;<br>
+              &nbsp;&nbsp;&nbsp;}<br>              <br>
+              &nbsp;&nbsp;&nbsp;public function getName(){<br>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return $this-&gt;name;<br>
+              &nbsp;&nbsp;&nbsp;}<br>              <br>
+              &nbsp;&nbsp;&nbsp;public function setName($name){<br>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$this-&gt;name = $name;<br>
+              &nbsp;&nbsp;&nbsp;}<br>              <br>
+              <span class="codeComment">/* Main method */</span><br>
+              &nbsp;&nbsp;&nbsp;public function execute() { <br>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return &quot;form&quot;; <br>
+              &nbsp;&nbsp;&nbsp;}<br>              <br>
+              &nbsp;&nbsp;&nbsp;public function submit () {<br>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return &quot;success&quot;;<br>
+              &nbsp;&nbsp;&nbsp;}<br>
+              ?&gt;			</td>
+        </tr>
+      </table>
+      </li><br>
+	  <li>
+	  <strong>
+	  <u>Modify and add HTML template file(s) for view part :</u>
+      </strong><br>
+	  Assume that the template root folder is &quot;<em>&lt;project root&gt;</em>/template&quot; and we choose &quot;Smarty&quot; for template engine. In this example, we need to create two template file. One of them is HTML form (form.html). Another one is used to show result (formResult.html).We save these template files into &quot;<em>&lt;project root&gt;</em>/template&quot; folder.<br>
+      <strong><br>
+      form.html:</strong><br>
+      <table width="100%" cellpadding="0" cellspacing="0" class="codeTable">
+        <tr>
+          <td valign="top" class="code">
+		  	  &lt;html&gt;<br>
+              &nbsp;&nbsp;&nbsp;&lt;head&gt;<br>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;title&gt;HTML Form application&lt;/title&gt;<br>
+              &nbsp;&nbsp;&nbsp;&lt;/head&gt;<br>
+              &nbsp;&nbsp;&nbsp;&lt;body&gt;<br>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;form name=&quot;form&quot; method=&quot;post&quot; action=&quot;ActionHandler.php?__action__=Test!submit&quot;&gt;<br>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;table border=&quot;0&quot;&gt;<br>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;tr&gt;<br>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;td&gt;Name : &lt;/td&gt;<br>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;td&gt;&lt;input name=&quot;name&quot; type=&quot;text&quot; id=&quot;name&quot; size=&quot;50&quot;&gt;&lt;/td&gt;<br>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/tr&gt;<br>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;tr&gt;<br>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;td&gt;address : &lt;/td&gt;<br>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;td&gt;&lt;textarea name=&quot;address&quot; cols=&quot;50&quot; rows=&quot;5&quot; id=&quot;address&quot;&gt;&lt;/textarea&gt;&lt;/td&gt;<br>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/tr&gt;<br>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;tr&gt;<br>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;td&gt;&amp;nbsp;&lt;/td&gt;<br>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;td&gt;&lt;input type=&quot;submit&quot; name=&quot;Submit&quot; value=&quot;Submit&quot;&gt;<br>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;input type=&quot;reset&quot; name=&quot;Submit2&quot; value=&quot;Reset&quot;&gt;&lt;/td&gt;<br>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/tr&gt;<br>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/table&gt;<br>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/form&gt;<br>
+              &nbsp;&nbsp;&nbsp;&lt;/body&gt;<br>
+              &lt;/html&gt;
+			 </td>
+        </tr>
+      </table>
+	  <br>
+		<strong>formResult.html:</strong><br>
+      <table width="100%" cellpadding="0" cellspacing="0" class="codeTable">
+        <tr>
+          <td valign="top" class="code">name = {$name}&lt;br&gt;<br>
+            addess = {$address}</td>
+        </tr>
+      </table>
+      </li>
+      <strong><br>
+      </strong>
+      <li><strong><u>Modify &quot;default.actions.xml&quot; to describe the relationship between action class and template file(s) :</u></strong><br>
+      Now, we add and modify view tag values.<br>
+      <br>
+      <strong>default.action.xml :</strong><br>
+      <table width="100%" cellpadding="0" cellspacing="0" class="codeTable">
+        <tr>
+          <td valign="top" class="code">
+			&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;<br>
+            &lt;actions&gt;<br>
+			&nbsp;&nbsp;&nbsp;&lt;action actionPath=&quot;TestAction.php&quot; name=&quot;Test&quot; className=&quot;TestAction&quot;&gt;<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;view name=&quot;success&quot;&gt;test.html&lt;/view&gt;<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;view name=&quot;form&quot;&gt;form.html&lt;/view&gt;<br>
+            &nbsp;&nbsp;&nbsp;&lt;/action&gt;<br>
+            &lt;/actions&gt;			</td>
+        </tr>
+      </table>
+	  </li>
+      </ol>
+      <a name="HTMLFormApplicationWithValidation"><span class="session">HTML Form application with validation</span></a><br>
+	  In this example, we modify previous example so that two input fields must be filled in data. Otherwise, it will show error messages in HTML Form and keep data which is entered before. There are two ways to perform validation .One of them is by using &quot;Validation filter&quot; (Please refer to &quot;<strong>Filtering</strong>&quot; part). Another one is by checking logic in action class. Now, we demo validation function by checking logic in action class.<br>
+      <ol class="numList">
+	  <li>
+	  Modify action class :<br>
+      Now, we modify the action class which is demo in previous example.
+	  <ul class="list">
+      	<li>We add &quot;check&quot; method to check whether &quot;name&quot; ,&quot;address&quot; fields' values is empty string or not.</li>
+      	<br><br>
+		<li>In &quot;check&quot; method, &quot;addError&quot; method defines in &quot;ActionBase&quot; class. It is used to store error message and related error message keyword.<br>
+      <table cellpadding="0" cellspacing="0" class="codeTable">
+        <tr>
+          <td width="624" valign="top" class="code">addError( &quot;<em>&lt;</em><em>error message keyword</em><em>&gt;&quot;</em> , &quot;<em>&lt;Error message&gt;&quot;</em> )</td>
+        </tr>
+      </table>
+	  </li>
+	  <br>
+      <li>In &quot;submit&quot; method, &quot;hasError&quot; method defines in &quot;ActionBase&quot; class. It is used to check whether program calls &quot;addError&quot; method to add error or not.</li>
+      </ul>
+      <strong><br>
+      TestAction.php :</strong><br>
+      <table width="100%" cellpadding="0" cellspacing="0" class="codeTable">
+        <tr>
+          <td valign="top" class="code"><p>&lt;?php<br>
+              include_once (&quot;ActionBase.php&quot;);<br>
+              <br>
+              class Test Action extends ActionBase {<br>
+              &nbsp;&nbsp;&nbsp;private $address;<br>
+              &nbsp;&nbsp;&nbsp;private $name;<br>
+              <br>
+              &nbsp;&nbsp;&nbsp;public function getAddress(){<br>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return $this-&gt;address;<br>
+              &nbsp;&nbsp;&nbsp;}<br>
+              <br>
+              &nbsp;&nbsp;&nbsp;public function setAddress($address){<br>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$this-&gt;address = $address;<br>
+              &nbsp;&nbsp;&nbsp;}<br>
+              <br>
+              &nbsp;&nbsp;&nbsp;public function getName(){<br>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return $this-&gt;name;<br>
+              &nbsp;&nbsp;&nbsp;}<br>
+              <br>
+              &nbsp;&nbsp;&nbsp;public function setName($name){<br>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$this-&gt;name = $name;<br>
+              &nbsp;&nbsp;&nbsp;}<br>
+              <br>
+              &nbsp;&nbsp;&nbsp;public function execute() {<br>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return &quot;form&quot;;<br>
+              &nbsp;&nbsp;&nbsp;}<br>
+              <br>
+              &nbsp;&nbsp;&nbsp;public function submit() {<br>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$this-&gt;check();<br>
+              <br>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if($this-&gt;hasError())<br>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return &quot;form&quot;;<br>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;else<br>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return &quot;success&quot;;<br>
+              &nbsp;&nbsp;&nbsp;}<br>
+              <br>
+              &nbsp;&nbsp;&nbsp;public function check(){<br>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if( trim( $this-&gt;name ) ==&quot;&quot;)<br>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$this-&gt;addError(&quot;name&quot;,&quot;Please enter your name!&quot;);<br>
+              <br>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if( trim( $this-&gt;address ) ==&quot;&quot;)<br>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$this-&gt;addError(&quot;address&quot;,&quot;Please enter your address!&quot;);<br>
+              &nbsp;&nbsp;&nbsp;}<br>
+              }<br>
+              ?&gt;<br></td>
+        </tr>
+      </table>
+	  </li>
+	  <br>
+     <li>
+	 <strong><u>Modify HTML template file(s) for view part :</u></strong><br>
+     Now, we modify &quot;form.html&quot; file in previous example.<br>
+	 <ul class="list">
+      <li><strong>KEVIX </strong>will set all error messages and its related error message key into PHP Array which is called &quot;errors&quot;. (i.e. $errors[&quot;<strong><em>&lt;error message key&gt;</em></strong>&quot;] = &quot;<strong><em>&lt;error message&gt;</em></strong>&quot; )</li>
+     <br><br>
+	  <li>We can give the error message(s) by using this Array variable.</li>
+     </ul>
+      <br>
+      <strong>form.html :</strong><br>
+      <table width="100%" cellpadding="0" cellspacing="0" class="codeTable">
+        <tr>
+          <td valign="top" class="code">
+		  	&lt;html&gt;<br>
+            &nbsp;&nbsp;&nbsp;&lt;head&gt;<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;title&gt;HTML Form application with validation&lt;/title&gt;<br>
+            &nbsp;&nbsp;&nbsp;&lt;/head&gt;<br>
+            &nbsp;&nbsp;&nbsp;&lt;body&gt;<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;form name=&quot;form&quot; method=&quot;post&quot; action=&quot;ActionHandler.php?__action__=Test!submit&quot;&gt;<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;table border=&quot;0&quot;&gt;<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;tr&gt;<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;td&gt;Name : &lt;/td&gt;<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;td&gt;&lt;input name=&quot;name&quot; type=&quot;text&quot; id=&quot;name&quot; size=&quot;50&quot; value=&quot;{$name}&quot;&gt;&lt;/td&gt;<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/tr&gt;<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;tr&gt;<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;td&gt;&lt;/td&gt;<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;td&gt;{$errors.name}&lt;/td&gt;<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/tr&gt;<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;tr&gt;<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;td&gt;address : &lt;/td&gt;<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;td&gt;&lt;textarea name=&quot;address&quot; cols=&quot;50&quot; rows=&quot;5&quot; id=&quot;address&quot;&gt;{$address}&lt;/textarea&gt;&lt;/td&gt;<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/tr&gt;<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;tr&gt;<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;td&gt;&lt;/td&gt;<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;td&gt;{$errors.address}&lt;/td&gt;<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/tr&gt;<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;tr&gt;<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;td&gt;&amp;nbsp;&lt;/td&gt;<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;td&gt;<br>
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;input type=&quot;submit&quot; name=&quot;Submit&quot; value=&quot;Submit&quot;&gt;<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;input type=&quot;reset&quot; name=&quot;reset&quot; value=&quot;Reset&quot;&gt;<br>
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/td&gt;<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/tr&gt;<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/table&gt;<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/form&gt;<br>
+            &nbsp;&nbsp;&nbsp;&lt;/body&gt;<br>
+            &lt;/html&gt;		</td>
+        </tr>
+      </table>
+      </li>
+	  <br>
+      <li><strong><u>Result:</u></strong><br>
+	  <ul class="list">
+      <li><strong>Without entering any data and press submit button</strong><br>
+      <table cellspacing="0" cellpadding="0">
+        <tr>
+          <td width="314" valign="top"><p><strong><img width="300" height="198" src="images/ch2-2.jpg"></strong></p></td>
+          <td width="46" valign="middle"><p><img width="37" height="36" src="images/arrow.gif"><strong></strong></p></td>
+          <td width="312" valign="top"><p align="right"><strong><img width="305" height="214" src="images/ch2-6.jpg"></strong></p></td>
+        </tr>
+      </table>
+      </li>
+	  <br>
+      <li>
+	  <strong>Entering data in one of text field </strong><br>
+      <table cellspacing="0" cellpadding="0">
+        <tr>
+          <td width="314" valign="top"><p><strong><img width="300" height="211" src="images/ch2-5.jpg"></strong></p></td>
+          <td width="53" valign="middle"><p><img width="37" height="36" src="images/arrow.gif"><strong></strong></p></td>
+          <td width="307" valign="top"><p><strong><img width="293" height="206" src="images/ch2-4.jpg"></strong></p></td>
+        </tr>
+      </table>
+	  </li>
+	  </ul>
+	  </li>
+    </ol>	</td>
+    <td width="30">&nbsp;</td>
+  </tr>
+</table>
+</body>
+</html>

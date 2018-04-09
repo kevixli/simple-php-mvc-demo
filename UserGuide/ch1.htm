@@ -1,0 +1,129 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<title>Chapter 1 : Installation</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link href="css/manual.css" rel="stylesheet" type="text/css">
+</head>
+
+<body>
+<table width="100%" border="0">
+  <tr>
+    <td width="30">&nbsp;</td>
+    <td><p class="topic"><a name="top" id="top"></a>INSTALLATION</p>
+      <a name="requirement"><span class="session">System requirements:</span></a>      <ul class="list">
+        <li>PHP 5.1 or above</li>
+        <li>Smarty / PHPTAL / Savant 2 (one of PHP template engine)</li>
+        <li>PEAR Log package (optional)</li>
+       </ul>
+	   <p>KEVIX can be used on both Unix and Windows platforms.</p>
+	   <a name="environment"><span class="session">System environment:</span></a>
+	   <ul class="list">
+	     <li>Variable &quot;register_global&quot; in php.ini must set to be &quot;off&quot;.</li>
+         <li>The permission of 'temp' folder in framework folder (i.e. by default, 'lib/kevix/') should set to have enough right for framework writing temp file(s) in there. </li>
+    </ul>
+<a name="stepByStep"><span class="session">Step by step: </span></a>
+	   <ol class="numList">
+	     <li>Unzip the framework zip in project root folder.<br><br>
+	     </li>
+         <li>If you want to move the framework main folder (lib/kevix) within the project folder, you can do following : </li>
+	   <ul class="list">
+	     <li>Open &quot;ActionHandler.php&quot; file and find the following statement:<br>
+		<table cellpadding="0" cellspacing="0" class="codeTable">
+        <tr>
+          <td width="420" valign="top"><p class="code">define( 'FRAMEWORK_RELATIVE_LOCATION', 'lib/' );</p></td>
+        </tr>
+       </table>
+	    <br>
+        </li>
+	   <li>By default, the framework main folder is located in &quot;lib&quot; folder. You can change the location by changing the value of &quot;<strong>FRAMEWORK_RELATIVE_LOCATION</strong>&quot; variable. For example, if you want to move folder in &quot;<em>&lt;project root&gt; </em>/otherCode&quot; folder, you should modify :<br>
+	   <table cellpadding="0" cellspacing="0" class="codeTable">
+         <tr>
+           <td width="420" valign="top" class="code">define(&quot;FRAMEWORK_RELATIVE_LOCATION&quot;, &quot;otherCode /&quot;);</td>
+         </tr>
+       </table>
+       <br>
+	   </li>
+	  </ul>
+	   <li>Define root folder of action class in &quot;mainSetting.inc&quot;. This file is located in &quot;<em>&lt;main framework folder&gt; </em>/config/&quot;. &quot; <strong>$framework[&quot;actionDIR&quot;]&quot; </strong> variable is used to define the root folder of action class. For example, if the root folder of action class is &quot;<em>&lt;project root&gt; </em>/class/action&quot; folder, you should modify :
+	     <table cellpadding="0" cellspacing="0" class="codeTable">
+         <tr>
+           <td width="444" valign="top" class="code">$framework[&quot;actionDIR&quot;] = &quot; class / action/ &quot;; </td>
+         </tr>
+       </table>
+         <br>
+	   </li>
+	   <li>
+	   	If you want to use &quot;Smarty&quot; for template engine, you should change to value of &quot; <strong>$Smarty[&quot;viewerDirPath&quot;]</strong>&quot; in &quot;<em>&lt;main framework folder&gt;</em>/config/viewerSetting.inc&quot;. This value is the relative location of folder which is store &quot;Smarty template engine&quot;. By default, the value is &quot;lib/Smarty&quot;.
+	   </li>
+	</ol>
+	<a name="AdvancedConfiguration"><span class="session">Advanced Configuration:</span></a>
+	<ol class="numList">
+	   <li><strong><u>mainSetting.inc (kevix/config/mainSetting.inc) : </u></strong><br>
+	   This is main setting file of framework.<br>
+	   <table width="100%" cellpadding="0" cellspacing="0" class="codeTable">
+         <tr>
+           <td width="100%" valign="top">
+		   	<span class="code">$framework[&quot;cachingMappingFile&quot;] = true;<br>
+		   	$framework[&quot;actionDIR&quot;] = &quot;class/action&quot;;<br>
+		   	$framework[&quot;viewerType&quot;] = &quot;Smarty&quot;;</span>
+			</td>
+         </tr>
+       </table>
+	   </li>
+	   <br>
+	   <ul class="list">
+	   <li>
+	   	<b>$framework[&quot;cachingMappingFile&quot;] :</b><br>
+	   	Whether all mapping files cached into one temp file or not.
+        <br><br>
+</li>
+	   <li>
+	   	<strong>$framework[&quot;actionDIR&quot;] :</strong><br>
+       	The relative location of root directory of all action classes.
+        <br><br>
+</li>
+	   <li>
+	   	<strong>$framework[&quot;viewerType&quot;] :</strong><br>
+  		The type of software which is chosen for view part processing (Smarty/PHPTAL/Savant2)<br>
+  		<br>
+		<strong>*notes:</strong> Smarty framework is preferred to be used. Although you can integrate with PHPTAL or Savant 2 automatically by changing this value, some of feature(s) in these two template engines cannot be used or limited to use.(i.e. Filtering function in these two template engines, etcK)
+	   <br><br>
+	   </li>
+	   </ul>
+	   <li>
+	   <strong><u>viewerSetting.inc (lib/kevix/viewerSetting.inc) :</u></strong><br>
+	   It stores all init values of template engines. All array key names are the same as template engines' configure names. Please refer relative Template engine website to set the value. </br>
+	   <table width="100%" cellpadding="0" cellspacing="0" class="codeTable">
+         <tr>
+           <td valign="top" class="code">
+		   	<span class="codeComment">/* Init values of Smarty */<br> 
+		   	</span>
+			$Smarty[&quot;viewerDirPath&quot;] = &quot;lib/smarty/&quot;;<br>
+            $Smarty[&quot;template_dir&quot;] = 'template/';<br>
+            $Smarty[&quot;compile_dir&quot;] = 'template_c/';<br>
+            $Smarty[&quot;config_dir&quot;] = 'lib/smarty/';<br>
+            $Smarty[&quot;left_delimiter&quot;] = '{';<br>
+            $Smarty[&quot;right_delimiter&quot;] = '}';<br>            <br>            
+            <span class="codeComment">/* Init values of PHPTAL*/ </span><br>
+            $PHPTAL[&quot;PHPTAL_FORCE_REPARSE&quot;]= 0;<br>
+            $PHPTAL[&quot;PHPTAL_PHP_CODE_DESTINATION&quot;] = &quot;template_c/&quot;;<br>
+            $PHPTAL[&quot;PHPTAL_TEMPLATE_REPOSITORY&quot;] = &quot;template/&quot;;<br>            <span class="codeComment"><br>
+            /* Init values of Savant 2 */ </span>
+            <br>
+            $Savant2[&quot;compileDir&quot;] = &quot;template_c/&quot;;<br>
+            $Savant2[&quot;template&quot;] = &quot;template/&quot;;<br>
+            $Savant2[&quot;forceCompile&quot;] = false;<br>
+            $Savant2[&quot;prefix&quot;] = &quot;{&quot;;<br>
+            $Savant2[&quot;suffix&quot;] = &quot;}&quot;;<br>
+            $Savant2[&quot;allowPHP&quot;] = false;</td>
+         </tr>
+       </table>
+	   </li>
+    </ol>	</td>
+    <td width="30">&nbsp;</td>
+  </tr>
+</table>
+</body>
+</html>

@@ -1,0 +1,212 @@
+<html>
+<head>
+<title>chapter 5: Build-in utility classes</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link href="css/manual.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+<table border="0">
+  <tr>
+    <td width="30">&nbsp;</td>
+    <td>
+	  <span class="topic">Build-in utility classes</span>
+	  <ol class="numList">
+	  <li><a name="applicationClass"><strong>Application class (tool/Application.php):</strong></a><br>
+      This is static class. It is used to implement emulated Application variable. There are several static methods in this class:
+        <br>
+        <br>      
+        <ul class="list">
+	  <li><strong>start() </strong> – Start Application to use. When you want to use application variable(s), it must use this static method first.<br>
+	    <br>
+	  </li>
+      <li><strong>set( <em>$key </em>, <em>$value </em>) </strong> – Defines the application variable name and its value.<br>
+        <br>
+      </li>
+      <li><strong>get( <em>$key </em>) </strong> – Get the application variable which is defined before.<br>
+        <br>
+      </li>
+      <li><strong>remove( <em>$key </em>) </strong> – Remove application variable which is defined before.<br>
+        <br>
+      </li>
+      <li><strong>end() </strong> – After using application variable(s), you must run this static method to save all application variable(s).</li>
+      </ul>
+	 <br>
+	  Here is an example:<br>
+      <strong><br>
+      A.php :</strong><br>
+      <table width="100%" cellpadding="0" cellspacing="0" class="codeTable">
+        <tr>
+          <td valign="top" class="code">
+		  Include_once(&quot;tool/Application.php&quot;);<br>		  <br>
+            Application::start();<br>
+                Application::set( &quot;test&quot;, &quot;This is testing…&quot; );<br>
+                Application::end();<br>
+              ……</td>
+        </tr>
+      </table>
+      <br>
+	  <strong>B.php :</strong><br>
+      <table width="100%" cellpadding="0" cellspacing="0" class="codeTable">
+        <tr>
+          <td valign="top" class="code">
+		 	Include_once(&quot;tool/Application.php&quot;);<br>
+            <br>
+            Application::start();<br>
+  			echo Application::get( &quot;test&quot; );<br>
+            Application::end();</td>
+        </tr>
+      </table>
+      <br>When A.php is called by user A, &quot;test&quot; application variable is set. Afterwards, B.php is called by User B and B.php can get &quot;test&quot; application variable and have following output result:<br>
+      <table width="100%" cellpadding="0" cellspacing="0" class="codeTable">
+        <tr>
+          <td class="code">This is testing…</td>
+        </tr>
+      </table>
+      </li>
+	  <br>
+      <li><a name="CalendarClass"><strong>Calendar class (tool/Calendar.php):</strong></a><br>
+      This is static class. It provides common &quot;Date&quot; static methods.<br>
+      <br>
+      <ul class="list">
+      <li><strong>getDatesOfWeekdayInMonth( <em>$weekdayName , $timestamp=&quot;&quot; </em>) </strong> – It return timestamps of all dates of indicated weekday in that month. The return value is in PHP Array. Input value of weekday name of this method must be &quot; <strong>SUNDAY </strong>&quot;, &quot; <strong>MONDAY </strong>&quot;, &quot; <strong>TUESDAY </strong>&quot;, &quot; <strong>WEDNESDAY </strong>&quot;, &quot; <strong>THURSDAY </strong>&quot;, &quot; <strong>FRIDAY </strong>&quot; or &quot; <strong>SATURDAY </strong>&quot;. Input value of timestamp of this method is timestamp of date. By default, the input value is timestamp of current time.</li>
+      <br>
+      <br>
+	  <li><strong>getNextDay( <em>$timestamp=&quot;&quot; </em>) </strong> – It returns timestamp of next day of input value. Input value of this method is timestamp of date. By default, the input value is timestamp of current time.</li>
+      <br>
+      <br>
+	  <li><strong>getTotalDaysInMonth( <em>$timestamp=&quot;&quot; </em>) </strong> – It returns the total days of that month. Input value of this method is timestamp of date. By default, the input value is timestamp of current time. </li>
+      <br>
+      <br>
+	  <li><strong>getPreviousDay( <em>$timestamp=&quot;&quot; </em>) </strong> - It returns timestamp of previous day of input value. Input value of this method is timestamp of date. By default, the input value is timestamp of current time.</li>
+      </ul>
+	  </li>
+	  <br>
+      <li><a name="componentManager"><strong>ComponentManager class (tool/ComponentManager.php):</strong></a><br>
+      This is static class. This class is used to get component object or get information of component object. The following static methods are provided in this class:
+        <br>
+        <br>      
+        <ul class="list">
+	  <li><strong>getComponent( <em>$enabler </em>) – </strong>return related component object which has same enabler name as the input value.<br>
+	    <br>
+	  </li>
+      <li><strong>getComponentClassName( <em>$enabler </em>) – </strong>return the class name of component object which has same enabler name as the input value.<br>
+        <br>
+      </li>
+      <li><strong>getComponentScope( <em>$enabler </em>) – </strong>return the scope value of component object which has same enabler name as the input value.</li>
+      </ul>
+	  </li>
+	  <br>
+      <li><a name="propertiesReader"><strong>PropertiesReader class (tool/PropertiesReader.php) :</strong></a><br>
+      This is static class. It provides static method to read propterties file.<br>
+	  <ul class="list">
+      <li><strong>parse( <em>$propertyFile </em>) – </strong>parse content of properties file and return result into PHP Array. The format of Array is <strong>$param[&quot; <em>&lt;property name&gt; </em>&quot;] = &quot; <em>&lt;property value&gt; </em>&quot; </strong>. If symbol &quot; <strong># </strong>&quot; locates at beginning of the line, this line will be ignored to parse. That means that line is comment line.</li>
+      </ul>
+	  <br>Here is an example:<br>
+	  <br>
+      <strong>test.properties :</strong><br>
+      <table width="100%" cellpadding="0" cellspacing="0" class="codeTable">
+        <tr>
+          <td valign="top" class="code">
+		  	# This is comment line.<br>
+              <br>
+            propertyName1 = this is value of property name 1.<br>
+            propertyName2 = this is value of property name 2.		  </td>
+        </tr>
+      </table>
+      <br>
+	  <strong>A.php :</strong><br>
+      <table width="100%" cellpadding="0" cellspacing="0" class="codeTable">
+        <tr>
+          <td valign="top" class="code">
+		  	Include_once(&quot;tool/PropertiesReader.php&quot;);<br>		  	<br>
+            $parseResult = PropertiesReader::parse(&quot;test.properties&quot;);<br>            <br>
+  			Foreach ($parseResult as $propertyName =&gt; $value)<br>
+  			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;echo &quot;The value of ‘$propertyName' is ‘$value' &lt;br/&gt;&quot;;  			</td>
+        </tr>
+      </table>
+      <br>
+      <strong>The output result:</strong><br>
+      <table width="100%" cellpadding="0" cellspacing="0" class="codeTable">
+        <tr>
+          <td valign="top" class="code">
+		  	The value of 'propertyName 1' is 'this is value of property name 1.'<br>
+            The value of 'propertyName 2' is 'this is value of property name 2.'		  </td>
+        </tr>
+      </table>
+      </li>
+	  <br>
+      <li><a name="stringUtilClass"><strong>StringUtil class (tool/StringUtil.php):</strong></a><br>
+      This is static class. This class provides static method to process string.<br>
+      <br>
+        <ul class="list">
+	  <li><strong>addEscapeSlashes( <em>$string </em>) </strong> – It returns string that &quot; <strong>\ </strong>&quot; are replaced to &quot; <strong>\\ </strong>&quot; and ' <strong>&quot; </strong> ' are replaced to ' <strong> \&quot; </strong>'.<br>
+	    <br> 
+	    <strong></strong></li>
+      <li><strong>shorten( <em>$string </em> , <em> $numberOfCharacters </em> , <em>$shortenSymbol </em> ) </strong> – It returns string which is shortened. By default, the number of character is 30 and symbol which is used to replace exceeding string is &quot;…&quot;. <strong></strong></li>
+      </ul>
+	  </li>
+	  <br>
+      <li><a name="validatorClass"><strong>Validator class (tool/Validator.php) :</strong></a><br>
+      This is static class. This class is use for validation. It provides several static methods:
+        <br>
+        <br>	  
+        <ul class="list">
+      <li><strong>notEmpty( <em>$parameters </em>) </strong> – Check the input string is empty or not. It returns true or false. The input parameter is in PHP Array format. (i.e. <strong>array(&quot;string&quot; =&gt; &quot; <em>&lt;input string&gt; </em>&quot;) </strong>)<br>
+        <br>
+      </li>
+      <li><strong>requiredString( <em>$parameters </em>) </strong> - Check input string is &quot;String&quot; type (i.e. it does not contain number) or not. It returns true or false. The input parameter is in PHP Array format. (i.e. <strong>array(&quot;string&quot; =&gt; &quot; <em>&lt;input string&gt; </em>&quot;) </strong>)<br>
+        <br>
+      </li>
+	  <li><strong>requiredNumber( <em>$parameters </em>) </strong> - Check the input string is number (i.e. 0-9) or not. It returns true or false. The input parameter is in PHP Array format. (i.e. <strong>array(&quot;string&quot; =&gt; &quot; <em>&lt;input string&gt; </em>&quot;) </strong>)<br>
+	    <br>
+	  </li>
+      <li><strong>email( <em>$parameters </em>) </strong> - Check the input string is correct email format or not. It returns true or false. The input parameter is in PHP Array format. (i.e. <strong>array(&quot;string&quot; =&gt; &quot; <em>&lt;input string&gt; </em>&quot;) </strong>)<br>
+        <br>
+      </li>
+	  <li><strong>strLen( <em>$parameters </em>) </strong> - Check the length of input string is in range of number (between minimum value and maximum value) or not. It returns true or false. The input parameter is in PHP Array format. (i.e. <strong>array(&quot;string&quot; =&gt; &quot; <em>&lt;input string&gt; </em>&quot; , &quot;min&quot; =&gt; &quot;&lt;min length&gt;&quot; , &quot;max&quot; =&gt; &quot;&lt;max length&gt;&quot;) </strong>) Either &quot;min&quot; value or &quot;max&quot; value can be omitted. That means you can set &quot;min&quot; value only or &quot;max&quot; value only or both of them.<br>
+	    <br>
+	  </li>
+      <li><strong>numRange( <em>$parameters </em>) </strong> - Check the length of input number is in range of number (between minimum value and maximum value) or not. It returns true or false. The input parameter is in PHP Array format. (i.e. <strong>array(&quot;string&quot; =&gt; &quot; <em>&lt;input string&gt; </em>&quot; , &quot;min&quot; =&gt; &quot;&lt;min length&gt;&quot; , &quot;max&quot; =&gt; &quot;&lt;max length&gt;&quot;) </strong>) Either &quot;min&quot; value or &quot;max&quot; value can be omitted. That means you can set &quot;min&quot; value only or &quot;max&quot; value only or both of them.<br>
+        <br>
+      </li>
+      <li><strong>dateRange( <em>$parameters </em>) </strong> - Check the length of input date is in range of dates (between start date and end date) or not. It returns true or false. The input parameter is in PHP Array format. (i.e. <strong>array(&quot;string&quot; =&gt; &quot; <em>&lt;input string&gt; </em>&quot; , &quot;min&quot; =&gt; &quot;&lt;min length&gt;&quot; , &quot;max&quot; =&gt; &quot;&lt;max length&gt;&quot;) </strong>) Either &quot;min&quot; value or &quot;max&quot; value can be omitted. That means you can set &quot;min&quot; value only or &quot;max&quot; value only or both of them.</li>
+      </ul>
+	  </li>
+	  <br>
+      <li><a name="XMLParserClass"><strong>XMLParser class (objectTool/XMLParser.php) :</strong></a><br>
+      This is <strong><em>not </em></strong> static class. You should define new object to use it. This class is used to parse XML file into PHP Array. There are several methods in this class:<br>
+      <br>
+      <ul class="list">
+	  <li><strong>parse( <em>$xml_file </em>) </strong>– parse XML file. In constructor of &quot;XMLParser&quot; class, it contains this method. As a result, we do not run this method after new this object. However, if you want to parse another XML file, you should run it again.<br>
+	    <br>
+	  </li>
+      <li><strong>getData() </strong> – return PHP Array which is contained result of parsed XML file.</li>
+      </ul>
+      <br>
+      Here is an example:<br>
+      <strong><br>
+      testXMLParser.php </strong>
+      <table width="100%" cellpadding="0" cellspacing="0" class="codeTable">
+        <tr>
+          <td valign="top" class="code">
+		  &lt;?php<br>
+            include_once(&quot;objectTool/XMLParser.php&quot;);<br>
+                <br>
+                <span class="codeComment">/* Create new XMLParser object and parse &quot;test.xml&quot; */</span><br>
+                <br>
+                $parser = new XMLParser(&quot;test.xml&quot;);<br>
+                $resultInArray = $parser-&gt;getData();<br>
+                <br>
+                <span class="codeComment">/* parse another xml file (another.xml) with same XMLParser object */</span><br>
+                <br>
+                $parser-&gt;parse(&quot;another.xml&quot;);<br>
+                $anotherResultInArray = $parser-&gt;getData();<br>
+              ?&gt;			 </td>
+        </tr>
+      </table>
+    </ol>	</td>
+    <td width="30">&nbsp;</td>
+  </tr>
+</table>
+</body>
+</html>

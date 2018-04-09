@@ -1,0 +1,335 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<title>chapter 4: Filtering function</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link href="css/manual.css" rel="stylesheet" type="text/css">
+</head>
+
+<body>
+<table border="0">
+  <tr>
+    <td width="30">&nbsp;</td>
+    <td>
+	  <span class="topic"><a name="top" id="top"></a>Filtering function</span>	  <p>
+	  	Filters allow calling before and/or after processing the action, which can vastly simplify your code itself and provide excellent opportunities for code reuse.
+      </p>
+	  <center><img src="images/filter.gif"><br>
+	    <br>
+	  </center>
+      <a name="introductionOfBuildInFilters"><span class="session">Introduction of build-in filters</span></a>
+	  <ul class="list">
+      <li><a name="applicationFilter"><strong>Application filter :</strong></a><br>
+      This filter helps to implement emulated application variable function. Application variable can be accessed and modified by every session. In PHP, there is no application variable like ASP. This filter emulates application function by saving all application variables in one temp file. By default, this temp file locates in &quot;<em>&lt;framework main folder&gt;</em>/temp/application.data&quot;.<br>
+      <br>
+      <strong>Configuration of Application filter :</strong><br>
+      You can change the location and file name of application temp file by following steps:<br>&nbsp;
+      <ol class="numList">
+      <li>Find this line from &quot;components.xml&quot;.<br>
+      <table width="100%" cellpadding="0" cellspacing="0" class="codeTable">
+        <tr>
+          <td valign="top" class="code"><p><strong>&lt;filter filterPath=&quot;filter/ApplicationFilter.php&quot; name=&quot;Application&quot; className=&quot;ApplicationFilter&quot;/&gt; </strong></p></td>
+        </tr>
+      </table>
+      </li>
+      <li>We can add parameter (appTempFile) in this filter.
+      <ul class="list">
+	  <li>
+	  <strong>appTempFile </strong> – defines the relative location(start from project root) of application temp file.
+      <br>
+      <strong><em>*Note: This parameter is optional.</em></strong></li>
+	  </ul>
+      <br>Here is a example:<br>
+      <table width="100%" cellpadding="0" cellspacing="0" class="codeTable">
+        <tr>
+          <td valign="top" class="code">
+		  	 &lt;filter filterPath=&quot;filter/ApplicationFilter.php&quot; name=&quot;Application&quot; className=&quot;ApplicationFilter&quot;&gt;<br>
+		  	 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;param name=&quot;appTempFile&quot;&gt;class/test.tmp&lt;/param&gt;<br>
+			 &lt;/filter&gt;</td>
+        </tr>
+      </table>
+	  </li>
+	  </ol>
+      </li>
+	  <br>
+      <li><strong><a name="validationFilter" id="validationFilter"></a>Validation filter: </strong><br>
+      This filter helps to perform validation. All condition of validation is defined in XML file. If one action class wants to perform this filter, you should create one XML file to store all condition of validation and it should be named in &quot;<strong><em>&lt;Action class name&gt;</em>-validator.xml</strong>&quot; format.<br>
+      <br>
+      <strong>Configuration of Validation filter: </strong><br>
+      You can change the root folder which is used to store all validation XML files by following steps :
+      <ol class="numList">
+	  <li>Find this line from "filters.xml".<br>
+      <table width="100%" cellpadding="0" cellspacing="0" class="codeTable">
+        <tr>
+          <td valign="top" class="code">&lt;filter filterPath=&quot;filter/ValidationFilter.php&quot; name=&quot;Validation&quot; className=&quot;ValidationFilter&quot;/&gt;</td>
+        </tr>
+      </table>
+      </li>
+	  <br><br>
+      <li>We can add parameter (validatorDir) in this filter.
+	  <ul class="list">
+	  <li>
+	  <strong>validatorDir </strong>– define the relative location(start from project root) of folder which is used to store all validation XML files. <br>
+      <strong><em>*Note: This parameter is optional. </em></strong>
+	  </li>
+	  </ul>
+      <br>
+	  Here is example:<br>
+      <table width="100%" cellpadding="0" cellspacing="0" class="codeTable">
+        <tr>
+          <td valign="top" class="code">
+			&lt;filter filterPath=&quot;filter/ValidationFilter.php&quot; name=&quot;Validation&quot; className=&quot;ValidationFilter&quot;&gt;
+            &nbsp;&nbsp;&nbsp;&lt;param name=&quot;validatorDir&quot;&gt;lib/kevix/config/validator/&lt;/param&gt;<br>            &lt;/filter&gt;
+		  </td>
+        </tr>
+      </table>
+	  </li>
+	  </ol>
+      <br>
+      <strong>Structure in XML file for validation :</strong><br>
+	  Coming soon...
+	  </li>
+	  <br><br>
+      <li><a name="IocComponentFilter"><strong>IoC component filter :</strong></a><br>
+      This filter helps to implement the type 2 of IOC (Inversion of Control). IOC is a design pattern that alleviates application objects from the responsibility of creating, and managing their dependencies. Type 2 of IOC uses setters for setting dependent components. All IoC components are defined in one XML file. By default, this XML file is located in &quot;<em>&lt;main framework folder&gt;</em>/config/&quot; and the name of IoC component XML file is &quot;components.xml&quot;. By considering the performance of reading component XML file, <strong>KEVIX </strong> will cache the component setting into one temp file after every updating component XML file. By default, this file is located in &quot;<em>&lt;main framework folder&gt;</em>/temp/component.tmp&quot;.
+      <br>
+      <br>
+      <strong>Configuration of IoC component filter :</strong><br>
+      You can change the name of IoC component XML file, the location of this XML file and the location of cache file by following steps:
+      <ol class="numList">
+	  <li>Find this line from &quot;filters.xml&quot;.<br>
+      <table width="100%" cellpadding="0" cellspacing="0" class="codeTable">
+        <tr>
+          <td valign="top" class="code">&lt;filter filterPath=&quot;filter/IoCcomponentFilter.php&quot; name=&quot;IoC&quot; className=&quot;IoCcomponentFilter&quot;/&gt;</td>
+        </tr>
+      </table>
+	  </li>
+	  <br>
+      <li>We can add two parameters (xmlFile, cacheFile) in this filter.
+	  <ul class="list">
+      <li><strong>xmlFile </strong>– define the relative location(start from project root) of component XML file.</li>
+      <li><strong>cacheFile </strong>– define the relative location(start from project root) of component cache file.<br>
+      <strong><em>*Note: These two parameters are optional. </em></strong></li>
+      </ul>
+	  <br>Here is example:<br>
+      <table width="100%" cellpadding="0" cellspacing="0" class="codeTable">
+        <tr>
+          <td valign="top" class="code">
+		  	  &lt;filter filterPath=&quot;filter/IoCcomponentFilter.php&quot; name=&quot;IoC&quot; className=&quot;IoCcomponentFilter&quot;&gt;<br>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;param name=&quot;XMLFile&quot;&gt;lib/kevix/config/components.xml&lt;/param&gt;<br>
+			  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;param name=&quot;cacheFile&quot;&gt;lib/kevix/temp/components.tmp&lt;/param&gt;<br>
+			  &lt;/filter&gt;
+		  </td>
+        </tr>
+      </table>
+	  </li>
+      </ol>
+      <br>
+	  <strong>Add IoC component to action class: </strong><br>
+      All IoC components are defined in one XML file. By default, this XML file is located in &quot;<em>&lt;main framework folder&gt;</em>/config/&quot; and the name of IoC component XML file is &quot;components.xml&quot;.
+      <ol class="numList">
+	  <li><strong>Add filter to action class</strong><br>
+      In action mapping file, we add &lt;ref-filter&gt; tag in this action class.<br>
+      <br>
+      Here is an example :<br>
+      <table width="100%" cellpadding="0" cellspacing="0" class="codeTable">
+        <tr>
+          <td valign="top" class="code">
+		  		&lt;action actionPath=&quot;XXXAction.php&quot; name=&quot;XXX&quot; className=&quot;XXXAction&quot;&gt;<br>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;rel-filter name=&quot;IoC&quot;/&gt;<br>
+              	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;……<br>
+			  &lt;/action&gt;</td>
+        </tr>
+      </table>
+      </li>
+	  <br>
+      <li>
+	  <strong>Defines component in IoC component XML file </strong><br>
+      By default, the name of this XML file is &quot;components.xml&quot;.
+      <br>
+      Here is the example of IoC component XML file:<br>
+      <table width="100%" cellpadding="0" cellspacing="0" class="codeTable">
+        <tr>
+          <td valign="top" class="code">
+		  	&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;<br>
+            &lt;components&gt;<br>
+            &nbsp;&nbsp;&nbsp;&lt;component scope=&quot;request&quot; classPath=&quot;class/action/test.php&quot; className=&quot;Test&quot; enabler=&quot;TestAware&quot;&gt;<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;property name=&quot;string&quot;&gt;str&lt;/property&gt;<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;property name=&quot;email&quot;&gt;email&lt;/property&gt;<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;constructor-arg&gt;Init's string ...&lt;/constructor-arg&gt;<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;constructor-arg&gt;Init's email ...&lt;/constructor-arg&gt;<br>
+            &nbsp;&nbsp;&nbsp;&lt;/component&gt;<br>
+            &nbsp;&nbsp;&nbsp;……<br>
+            &lt;/components&gt;</td>
+        </tr>
+      </table>
+	  <br>
+      Each component must have the following three attributes:
+	  <ul class="list">
+      <li><strong>scope </strong> – Valid values are session and request. This determines the component's lifetime. Session scoped components exist for the duration of a user session, while components in request scope only last for the duration of a single client request.</li>
+      <li><strong>class </strong> – This specifies the component's class. An instance of this object will live for the duration of the specified scope, and will be made available to any actions (or other code) as required.</li>
+      <li><strong>enabler </strong> – Any actions that are an instanceof the enabler class or interface will be passed an instance of the component.</li>
+      </ul>
+      <br>
+      Each &quot;component&quot; tag can include the following two types of tag :<br>
+      <ul class="list">
+	  <li><strong>property </strong> – indicate that when Component Manager initiates component object, it will also perform some "set" method(s) of this object to set value(s). The "name" attribute defines "set" method in component object which want to perform it to set value. The content of "property" tag is the value which you want to set into variable. In this example, Component Manager will call "setString" and "setEmail" methods of "Test" class (component object) to set values.</li>
+      <li><strong>constructor-arg </strong> – defines value of init argument of component object. The order of "constructor-arg" tag is order of argument. In this example, Component Manager will initiates component object by following code :<br>
+        <table width="100%" cellpadding="0" cellspacing="0" class="codeTable">
+        <tr>
+          <td valign="top" class="code">componentObject = new Test ( &quot;Init's string ...&quot; , &quot;Init's email ...&quot;);</td>
+        </tr>
+      </table>
+      </li>
+	  </ul>
+	  </li>
+	  <br>
+      <li><strong>Write interface class to use as enabler </strong><br>
+      We should write an interface class and its name must be same as the value of &quot;enabler&quot; attribute which is defined in IoC component XML file. In this interface, we should define one set method in this interface class. This set method is used to set IoC component object into action class by this filter. In this example, we should write interface class which is called &quot;TestAware&quot; and defines &quot;setTest&quot; method in interface class.<br>
+      <br>
+      <strong>TestAware.php : </strong><br>
+      <table cellpadding="0" cellspacing="0" class="codeTable">
+        <tr>
+          <td width="624" valign="top" class="code">&lt;?php<br>
+            interface TestAware {<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;public function setTest($test);<br>
+            }<br>
+            ?&gt;</td>
+        </tr>
+      </table>
+      </li>
+	  <br>
+      <li><strong>Modify action class to implement that interface class </strong><br>
+      Action class should implement relative interface class so that the IoC component filter can know which component object should be set into action class. Now, you can call the object in action class directly.<br>
+      <br>
+      Here is an example of action class:<br>
+      <table cellpadding="0" cellspacing="0" class="codeTable">
+        <tr>
+          <td width="624" valign="top" class="code">
+		  &lt;?php<br>
+            include_once (&quot;ActionBase.php&quot;);<br>
+            include_once (&quot;class/implement/TestAware.php&quot;);<br>            <br>
+            class XXXAction extends ActionBase implements TestAware {<br>
+            &nbsp;&nbsp;&nbsp;private $test;<br>
+            <br>
+            &nbsp;&nbsp;&nbsp;public function execute() {<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$this-&gt;test-&gt;setString(&quot;Execute&quot;);<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return &quot;form&quot;;<br>
+            &nbsp;&nbsp;&nbsp;}<br>
+            <br>
+            &nbsp;&nbsp;&nbsp;public function setTest($object) {<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$this-&gt;test = $object;<br>
+            &nbsp;&nbsp;&nbsp;}<br>
+            &nbsp;&nbsp;&nbsp;……<br>
+            }</td>
+        </tr>
+      </table>
+      </ol>
+      </li>
+	  <br>
+	  <li><a name="fileUploadFilter"><strong>File upload filter: </strong></a><br>
+      This filter helps to check and limited file type and file size of every upload file. It also checks the total file size of all upload files.<br>
+      <br>
+      <strong>Configuration of file upload filter:</strong><br>
+      You can configure the rule of checking upload file by following steps : 
+      <ol class="numList">
+	  <li>
+	  Find this line from "components.xml".<br>
+      <table width="100%" cellpadding="0" cellspacing="0" class="codeTable">
+        <tr>
+          <td valign="top" class="code">&lt;filter filterPath=&quot;filter/FileUploadFilter.php&quot; name=&quot;FileUpload&quot; className=&quot;FileUploadFilter&quot;/&gt;</td>
+        </tr>
+      </table>
+      </li><br>
+      <li>We can add following parameters in this filter.
+	  <ul class="list">
+      <li><strong>allowedTypes </strong>– define all accept file types of all upload files.</li>
+      <li><strong>allowedTypesErrMsg </strong>– define error message of disallowing file types of upload file.</li>
+      <li><strong>eachMaxSize – </strong>define maximum file size (in byte) of each upload file.</li>
+      <li><strong>eachMaxSizeErrMsg – </strong>define error message of exceeding maximum file size of each upload file.</li>
+      <li><strong>totalMaxSize – </strong>define maximum total of file size (in byte) of all upload files.</li>
+      <li><strong>totalMaxSizeErrField – </strong>define variable name which is used to store the error message of exceeding maximum total of file size of all upload files.</li>
+      <li><strong>totalMaxSizeErrMsg – </strong>define the error message of exceeding maximum total of file size of all upload files.<br>
+      <strong><em>*Note: All parameters are optional. </em></strong></li>
+      </ul>
+	  <br>
+	  Here is example:<br>
+      <table width="100%" cellpadding="0" cellspacing="0" class="codeTable">
+        <tr>
+          <td valign="top" class="code">
+		  &lt;filter filterPath=&quot;filter/FileUploadFilter.php&quot; name=&quot;FileUpload&quot; className=&quot;FileUploadFilter&quot;&gt;<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;param name=&quot;allowedTypes&quot;&gt;text/plain,image/pjpeg&lt;/param&gt;<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;param name=&quot;allowedTypesErrMsg&quot;&gt;Not in type!&lt;/param&gt;<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;param name=&quot;eachMaxSize&quot;&gt;0&lt;/param&gt;<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;param name=&quot;eachMaxSizeErrMsg&quot;&gt;Max file size!&lt;/param&gt;<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;param name=&quot;totalMaxSize&quot;&gt;300000&lt;/param&gt;<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;param name=&quot;totalMaxSizeErrField&quot;&gt;test2&lt;/param&gt;<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;param name=&quot;totalMaxSizeErrMsg&quot;&gt;Max total file size!&lt;/param&gt;<br>
+            &lt;/filter&gt;</td>
+        </tr>
+      </table>
+	  </li>
+      </ol>
+	  </li>
+	  <br>
+      <li><a name="i18nFilter"><strong>I18N filter: </strong></a><br>
+      This filter does not complete.
+      </li>
+	  <br><br>
+      <li><a name="logFilter"><strong>Log filter: </strong></a><br>
+      This filter does not complete.
+	  </li>
+      </ul>
+      <a name="howToWriteYourOwnFilter"><span class="session">How to write your own filter</span></a>
+	  <ol class="numList">
+	  <li><strong>Write filter class and extends to &quot;FilterBase&quot; class. </strong><br>
+      All filters must extend to &quot;FilterBase&quot; abstract class. In &quot;FilterBase&quot; class, it provides the following methods to use:
+        <ul class="list">
+	  <li><strong>getFilterParameters() </strong> – return all parameters of filter which are defined in filters.xml. The return value is in PHP Array format. (i.e. $parameters[&quot;<em>&lt;param name&gt;</em>&quot;] = &quot;<em>&lt;param value&gt;</em>&quot;)</li>
+      <li><strong>getParameters() </strong> – return all parameters which are came from &quot;request&quot; data. (POST/GET method in HTML Form). The return value is in PHP Array format. (i.e. $parameters[&quot;<em>&lt;param name&gt;</em>&quot;] = &quot;<em>&lt;param value&gt;</em>&quot;)</li>
+      <li><strong>getActionObject() </strong>– return the reference object of action class which is called.</li>
+      </ul>
+	  </li>
+	  <br>
+      <li><strong>Defines &quot;init&quot;, &quot;destroy&quot;, &quot;filterIn&quot; and &quot;filterOut&quot; methods in your filter class.</strong><br>
+      As &quot;FilterBase&quot; class defines these four abstract methods, each filter must define these four methods.
+        <ul class="list">
+	  <li><strong>init() </strong> – this method will be run when the filter is initiated.</li>
+      <li><strong>filterIn() </strong>– this method is run before performing action in action class. This method can return string value which is represented &quot;return&quot; string value of template file. If it returns value, all following filters and action class will not run.</li>
+      <li><strong>filterOut() </strong>–this method is run after performing action in action class.</li>
+      <li><strong>destroy() </strong>- this method will be run before the filter is unset.</li>
+      </ul>
+	  </li>
+	  <br>
+      <li><strong>Registers your filter in &quot;filters.xml&quot; file. </strong><br>
+      All filters must be registered in &quot;filters.xml&quot; by using "filter" tag. Several attributes must be defined in &quot;filter&quot; tag:
+      <ul class="list">
+	  <li><strong>filterPath </strong> – defines the location of filter class file.</li>
+      <li><strong>Name </strong> – defines the keyword of filter. It will be referred by &quot;ref-filter&quot; tag in action mapping file.</li>
+      <li><strong>className </strong> – defines the class name of filter.</li>
+      </ul>
+      <br>
+      Some filter may have parameter(s) to decide some action. In &quot;filter&quot; tag, &quot;param&quot; tag is used to set value of filter parameter. In filter class, you can call &quot;getFilterParameters()&quot; method to get all filter parameters.<br>
+      <br>
+      <table width="100%" cellpadding="0" cellspacing="0" class="codeTable">
+        <tr>
+          <td valign="top" class="code">
+		  	&lt;filters&gt;<br>
+            &nbsp;&nbsp;&nbsp;……<br>
+			&nbsp;&nbsp;&nbsp;&lt;filter filterPath=&quot;xxx.php&quot; name=&quot;xxx&quot; className=&quot;xxx&quot;&gt;<br>
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;param name=&quot;xxx&quot;&gt;……&lt;/param&gt;<br>
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;param name=&quot;xxx&quot;&gt;……&lt;/param&gt;<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;……<br>
+			&nbsp;&nbsp;&nbsp;&lt;/filter&gt;<br>
+            &nbsp;&nbsp;&nbsp;……<br>
+			&lt;/filters&gt;</td>
+        </tr>
+      </table>
+	  </li>
+    </ol>    </td>
+    <td width="30">&nbsp;</td>
+  </tr>
+</table>
+</body>
+</html>

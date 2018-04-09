@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<filters>
+	<filter filterPath="filter/FileUploadFilter.php" name="FileUpload" className="FileUploadFilter">
+		<!--param name="allowedTypes">text/plain,image/pjpeg</param>
+		<param name="allowedTypesErrMsg">Not in type!</param>
+		<param name="eachMaxSize">0</param>
+		<param name="eachMaxSizeErrMsg">Max file size!</param>
+		<param name="totalMaxSize">300000</param>
+		<param name="totalMaxSizeErrField">test2</param>
+		<param name="totalMaxSizeErrMsg">Max total file size!</param-->
+	</filter>
+	<filter filterPath="filter/LogFilter.php" name="Log" className="LogFilter" />
+	<filter filterPath="filter/ValidationFilter.php" name="Validation" className="ValidationFilter">
+		<!--param name="validatorDir">lib/kevix/config/validator/</param-->
+	</filter>
+	<filter filterPath="filter/I18nFilter.php" name="I18N" className="I18nFilter" />
+	<filter filterPath="filter/ApplicationFilter.php" name="Application" className="ApplicationFilter">
+		<!--param name="appTempFile">class/test.tmp</param-->
+	</filter>
+	<filter filterPath="filter/IoCcomponentFilter.php" name="IoC" className="IoCcomponentFilter">
+		<!--param name="XMLFile">lib/kevix/config/components.xml</param>
+		<param name="cacheFile">lib/kevix/temp/components.tmp</param-->
+	</filter>
+</filters>

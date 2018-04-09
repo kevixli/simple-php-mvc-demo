@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<validators>
+  <!--field name="name">
+    <field-validator type="dateRange">
+      <param name="min">1/1/2006</param>
+      <param name="max">31/12/2006</param>
+      <message key="Must in this year!!!"/>
+    </field-validator>
+  </field-->
+  <field name="address">
+    <field-validator type="notEmpty">
+     <message key="No address!"/>
+    </field-validator>
+  </field>
+  
+  <expression>
+    <param name="expression">
+      <![CDATA[
+      	$parameters["name"]
+      ]]>
+    </param>
+    <param name="errorVar">
+      name
+    </param>
+    <message key="Name must be same as address!"/>
+  </expression>
+</validators>

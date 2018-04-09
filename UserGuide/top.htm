@@ -1,0 +1,54 @@
+<html>
+<head>
+<title>Untitled Document</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style>
+a {
+	color:#FFFFFF;
+	text-decoration:none;
+	font-weight: bolder;
+	font-size:12px;
+}
+
+a:hover {
+text-decoration:underline;
+}
+</style>
+<script language="javascript">
+var chapter = 0;
+
+function previousChapter(){
+	if (chapter!= 0) {
+		chapter--;
+		if(chapter!=0)
+			top.mainFrame.location = "ch" + chapter + ".htm";
+	 	else
+			top.mainFrame.location = "cover.htm";
+	}
+}
+
+function nextChapter(){
+	if (chapter!= 5) {
+		chapter++;
+		top.mainFrame.location = "ch" + chapter + ".htm";
+	}
+}
+</script>
+</head>
+<body bgcolor="#003366" leftmargin="0" topmargin="0">
+<table width="100%" border="0">
+  <tr>
+  	<td><strong><font color="#FFFFFF" size="4">KEVIX - User guide</font></strong></td>
+    <td align="right" valign="bottom">
+	<table border="0">
+      <tr>
+        <td valign="bottom"><a href="#" onClick="previousChapter();">Previous Chapter</a></td>
+		<td width="10"></td>
+        <td valign="bottom"><a href="#" onClick="nextChapter();">Next Chapter</a></td>
+		<td width="10"></td>
+      </tr>
+    </table></td>
+  </tr>
+</table>
+</body>
+</html>

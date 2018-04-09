@@ -1,0 +1,82 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<title>Chapter 3: Tags in action mapping XML file</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link href="css/manual.css" rel="stylesheet" type="text/css">
+</head>
+
+<body>
+<table border="0">
+  <tr>
+    <td width="30">&nbsp;</td>
+    <td>	<span class="topic"><a name="default-views"></a>Tags in action mapping XML file</span>
+	<p>
+	Action mapping XML file is used to describe the relationship between template files and action classes. It also describes the relationship between filters and action classes. Each Web application can have many action mapping files rather than only one mapping file (default.action.xml). You can define these mapping files in &quot;default.action.xml&quot; file by using &quot;include&quot; tag. <strong>KEVIX </strong> will read all tags in &quot;default.action.xml&quot; and also read other action mapping file(s) which is/are defined in &quot;default.action.xml&quot;.
+    <br>
+    Here is an example of &quot;default.actions.xml&quot; file:</p>
+      <strong>default.actions.xml </strong><br>
+      <table cellpadding="0" cellspacing="0" class="codeTable">
+        <tr>
+          <td width="624" valign="top" class="code">
+		  	&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;<br>            &lt;actions&gt;<span class="codeComment"><br>
+            &lt;!-- define all default views' paths --&gt;</span><br>
+            &nbsp;&nbsp;&nbsp;&lt;default-views&gt;<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;view name=&quot;login&quot;&gt;login.html&lt;/view&gt;<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;view name=&quot;error&quot;&gt;failure.html&lt;/view&gt;<br>
+            &nbsp;&nbsp;&nbsp;&lt;/default-views&gt;<br>
+            <span class="codeComment"><br>
+            &lt;!-- include other XML mapping file(s) --&gt;</span><br>
+            &nbsp;&nbsp;&nbsp;&lt;include file=&quot;mappinFiles/forum.actions.xml&quot; /&gt;<br>
+            &nbsp;&nbsp;&nbsp;&lt;include file=&quot;mappinFiles/project.actions.xml&quot; /&gt;<br>            <span class="codeComment"><br>
+            &lt;!-- define all action classes  --&gt;</span><br>
+            &nbsp;&nbsp;&nbsp;&lt;action actionPath=&quot;common/RedirectAction.php&quot; name=&quot;Redirect&quot; className=&quot;RedirectAction&quot;&gt;<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;view name=&quot;success&quot;&gt;test.html&lt;/view&gt;<br>
+            &nbsp;&nbsp;&nbsp;&lt;/action&gt;<br>            <br>
+            &nbsp;&nbsp;&nbsp;&lt;action actionPath=&quot;TestAction.php&quot; name=&quot;Test&quot; className=&quot;TestAction&quot;&gt;<br>
+            <span class="codeComment">&lt;!-- define related filter(s) --&gt;</span>            <br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;rel-filter name=&quot;Application&quot;/&gt;<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;rel-filter name=&quot;Validation&quot; method=&quot;submit&quot;/&gt;<span class="codeComment"><br>
+            &lt;!-- define view(s) --&gt;</span>            <br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;view name=&quot;success&quot;&gt;showResult.html&lt;/view&gt;<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;view name=&quot;form&quot;&gt;form.html&lt;/view&gt;<br>
+            &nbsp;&nbsp;&nbsp;&lt;/action&gt;<br>
+            &lt;/actions&gt;		</td>
+        </tr>
+      </table>
+ 		<ol class="numList">
+      		<li><u><strong>default-views tag:</strong></u><a name="default-views"></a>
+      		  <ul class="list">
+      				<li>It is optional tag.</li><br><br>
+      				<li>In this tag, it can have one or more "view" tag(s) to define default value(s) of "return" string(s) in all action classes. In this example, it defines "login" and "error" in "default-views" tag. That means these "return" strings' values will set to all actions ("Redirect", "Test") and all actions which are defined in other included files (mappinFiles/admin.actions.xml).</li><br><br>
+   					<li>Make sure that "default-views" tag is placed before "include" tags and "action" tags.</li><br><br>
+      				<li>"default-views" tag must only be defined in "default.action.xml" maping file. Other mapping files cannot use this tag.</li>
+   			  </ul>
+		  </li><br>
+      		<li><a name="include"><strong><u>include tag:</u></strong></a>   		  
+      		  <ul class="list">
+      				<li>It is optional tag.</li><br><br>
+     				<li>The "file" attribute defines the location of action mapping file.</li><br><br>
+      				<li>The "include" tag must only be defined in "default.action.xml" maping file. Other mapping files cannot use this tag.</li>
+		  	  </ul>
+		  </li>
+		  <br>
+      	 <li><a name="action"><strong><u>action tag:</u></strong></a> 
+<ul class="list">
+					<li>The "actionPath" attribute defines the location of action class file.</li><br><br>
+      				<li>The "name" attribute defines the keyword for calling this action class.</li><br><br>
+      				<li>The &quot;className&quot; attribute indicates what class is used in action class file.</li><br><br>
+      				<li>In &quot;action&quot; tag, it can have one or more &quot;view&quot; tag(s) to define value(s) of &quot;return&quot; string(s) in that action class.</li><br><br>
+      				<li>In the &quot;view&quot; tag, &quot;name&quot; attribute defines the name of &quot;return&quot; string and the content between &quot;view&quot; tags is the location of template file.</li><br><br>
+      				<li>In &quot;action&quot; tag, it can also have one or more &quot;rel-filter&quot; tag(s) to define what filter(s) will be used in action class. The &quot;method&quot; attribute of &quot;rel-filter&quot; tag defines which method of action class use that filter. If this attribute does not define, that means all methods will use this filter.<br>
+      				  <strong><em>*Note: The order of defining &quot;rel-filter&quot; tags is also the order of running filters.</em></strong>
+					</li>
+		   </ul>
+		  </li>
+	</ol>	</td>
+    <td width="30">&nbsp;</td>
+  </tr>
+</table>
+</body>
+</html>
